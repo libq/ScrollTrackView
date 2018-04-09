@@ -30,6 +30,7 @@
         app:space_size="5dp"
         app:track_item_width="1dp"
         app:track_fragment_count="10"
+	app:auto_run="true"
         />
 ```
   
