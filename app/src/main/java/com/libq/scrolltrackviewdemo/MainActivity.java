@@ -29,7 +29,7 @@ public class MainActivity extends Activity {
 
             @Override
             public void onTrackStartTimeChange(int ms) {
-                tv.setText("从 "+ms*1f/1000f+" 开始");
+                tv.setText("从 "+ms*1f/1000f+" 秒开始");
             }
         });
     }
