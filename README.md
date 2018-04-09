@@ -4,20 +4,20 @@
 ![demo](https://github.com/libq/ScrollTrackView/blob/master/demo.png)
 
 
-## 使用
-# 项目build.gradle ：
+# 使用
+## project 下的 build.gradle ：
     allprojects {
 		repositories {
 			...
 			maven { url 'https://jitpack.io' }
 		}
 	}
-# module build.gradle ：
+## module 下的 build.gradle ：
     dependencies {
 	        compile 'com.github.libq:ScrollTrackView:1.0.0'
 	}
 	
-# xml：
+## xml：
  ```
  <com.libq.scrolltrackview.ScrollTrackView
         android:id="@+id/stv"
