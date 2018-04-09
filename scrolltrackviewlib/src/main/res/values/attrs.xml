@@ -7,5 +7,6 @@
         <attr name="track_item_width" format="dimension"></attr>
         <attr name="delay_time" format="integer"></attr>
         <attr name="track_fragment_count" format="integer"/>
+        <attr name="auto_run" format="boolean"/>
     </declare-styleable>
 </resources>

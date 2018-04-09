@@ -22,7 +22,6 @@ import android.widget.HorizontalScrollView;
 public class ScrollTrackView extends HorizontalScrollView {
 
     private Handler mScrollHandler;
-
     private OnScrollTrackListener mOnScrollTrackListener;
     private OnProgressRunListener mProgressRunListener;
 
@@ -32,6 +31,8 @@ public class ScrollTrackView extends HorizontalScrollView {
     private int mTrackItemWidth=16;
     private int mDelayTime = 20;//ms
     private int mTrackFragmentCount = 10;
+    private boolean isAutoRun = true;
+    private boolean isRestart = true;
 
     /**
      * 滚动状态:
@@ -50,7 +51,7 @@ public class ScrollTrackView extends HorizontalScrollView {
      * 当前滚动状态
      */
     private ScrollStatus scrollStatus = ScrollStatus.IDLE;
-    //--------------------------------
+
     private Track track;
     private boolean disableTouch;
     private TrackMoveController moveController;
@@ -73,6 +74,7 @@ public class ScrollTrackView extends HorizontalScrollView {
         int tiw = typedArray.getDimensionPixelSize(R.styleable.ScrollTrackView_track_item_width, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 0, getContext().getResources().getDisplayMetrics()));
         mTrackItemWidth = tiw==0?mTrackItemWidth:tiw;
 
+        isAutoRun = typedArray.getBoolean(R.styleable.ScrollTrackView_auto_run,isAutoRun);
         mTrackFragmentCount = typedArray.getInteger(R.styleable.ScrollTrackView_track_fragment_count,mTrackFragmentCount);
         mDelayTime = typedArray.getInteger(R.styleable.ScrollTrackView_delay_time,mDelayTime);
 
@@ -96,6 +98,7 @@ public class ScrollTrackView extends HorizontalScrollView {
 
         HorizontalScrollView.LayoutParams lp = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         addView(track,lp);
+        setSmoothScrollingEnabled(false);
 
 
 
@@ -110,7 +113,7 @@ public class ScrollTrackView extends HorizontalScrollView {
             @Override
             public void onProgressStart() {
                 if(mProgressRunListener !=null){
-                    mProgressRunListener.onTrackRun();
+                    mProgressRunListener.onTrackRun(getStartTime());
                 }
             }
         });
@@ -120,7 +123,10 @@ public class ScrollTrackView extends HorizontalScrollView {
             public void run() {
                 //可视的时候开始走进度
                 moveController.setScrollTrackViewWidth(getWidth());
-                startMove();
+                if(isAutoRun){
+                    startMove();
+                }
+
             }
         });
 
@@ -177,7 +183,7 @@ public class ScrollTrackView extends HorizontalScrollView {
         void onScrollChanged(ScrollStatus scrollStatus);
     }
 
-    private boolean isScrollChange = false;
+
     /**
      * 滚动监听runnable 方便获取滑动状态
      */
@@ -193,7 +199,7 @@ public class ScrollTrackView extends HorizontalScrollView {
                 mScrollHandler.removeCallbacks(this);
                 return;
             } else {
-                isScrollChange = true;
+
                 //手指离开屏幕,但是view还在滚动
                 scrollStatus = ScrollStatus.FLING;
                 if(mOnScrollTrackListener !=null){
@@ -235,6 +241,12 @@ public class ScrollTrackView extends HorizontalScrollView {
         }
     };
 
+    /*@Override
+    public void fling(int velocity) {
+        super.fling(velocity / 1000);
+    }*/
+
+
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
@@ -256,6 +268,23 @@ public class ScrollTrackView extends HorizontalScrollView {
     }
 
     /**
+     * 重新开始播放
+     */
+    public void restartMove(){
+        disableTouch = true;
+
+        if (moveController != null) {
+            scrollTo(0,0);
+            smoothScrollTo(0, 0);
+            moveController.restart();
+            if(mProgressRunListener!=null){
+                mProgressRunListener.onTrackStartTimeChange(0);
+            }
+        }
+    }
+
+
+    /**
      * 停止
      */
     public void stopMove() {
@@ -269,7 +298,7 @@ public class ScrollTrackView extends HorizontalScrollView {
      * 轨道开始播放到轨道结束监听
      */
     public interface OnProgressRunListener {
-        void onTrackRun();
+        void onTrackRun(int ms);
         void onTrackStartTimeChange(int ms);
 
     }
@@ -290,7 +319,6 @@ public class ScrollTrackView extends HorizontalScrollView {
      */
     public int getStartTime(){
         float rate = Math.abs(getScrollX())/(track.getWidth()*1f);
-        Log.e("xxx","scroll x = " + getScrollX() +" track width = "+track.getWidth());
         return (int)(audioDuration * rate);
     }
 

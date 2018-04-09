@@ -10,12 +10,12 @@
     <TextView android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         android:id="@+id/tv"
+        android:text="从 0.0 秒开始"
         android:layout_margin="10dp"
         />
     <com.libq.scrolltrackview.ScrollTrackView
         android:id="@+id/stv"
         android:layout_margin="10dp"
-        android:paddingLeft="10dp"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         app:foreground_color="@color/colorAccent"
@@ -23,6 +23,13 @@
         app:space_size="5dp"
         app:track_item_width="1dp"
         app:track_fragment_count="10"
+        />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="重头开始播"
+        android:layout_margin="10dp"
+        android:id="@+id/btnRestart"
         />
 
 </LinearLayout>

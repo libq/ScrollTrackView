@@ -71,6 +71,14 @@ public class TrackMoveController {
         mProgress = mScrollTrackStartX;
     }
 
+    public synchronized void restart(){
+        stop();
+        mScrollTrackStartX = 0;
+        mProgress = 0;
+        isCanRun = true;
+        start();
+    }
+
 
     public int getProgress(){
         return mProgress;
