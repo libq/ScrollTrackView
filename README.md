@@ -14,7 +14,7 @@
 	}
 ## module 下的 build.gradle ：
     dependencies {
-	        compile 'com.github.libq:ScrollTrackView:1.0.0'
+	        compile 'com.github.libq:ScrollTrackView:1.0.1'
 	}
 	
 ## xml：
@@ -30,6 +30,7 @@
         app:space_size="5dp"
         app:track_item_width="1dp"
         app:track_fragment_count="10"
+	app:auto_run="true"
         />
 ```
   
