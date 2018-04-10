@@ -28,11 +28,11 @@ public class MainActivity extends Activity {
         stv.setDuration(20000); // 音频时间
         stv.setCutDuration(10000);//屏幕左边跑到右边持续的时间
         stv.setTrackFragmentCount(10);//1 中是一个片段，这个参数表示重复1中片段画10次
-        stv.setLoopRun(false);//设置是否循环跑进度
+        stv.setLoopRun(true);//设置是否循环跑进度
         stv.setOnProgressRunListener(new ScrollTrackView.OnProgressRunListener() {
             @Override
             public void onTrackStart(int ms) {
-                
+
             }
 
             @Override

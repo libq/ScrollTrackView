@@ -188,9 +188,7 @@ public class ScrollTrackView extends HorizontalScrollView {
      * @param isLoop
      */
     public void setLoopRun(boolean isLoop){
-        if(moveController!=null){
-            moveController.setLoopRun(isLoop);
-        }
+        isLoopRun = isLoop;
     }
 
     public void setTrackTemplateData(float[] data){

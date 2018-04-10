@@ -25,6 +25,7 @@
         app:track_fragment_count="10"
         app:loop_run="false"
         app:cut_duration="10000"
+        app:auto_run="true"
         />
     <Button
         android:layout_width="wrap_content"
