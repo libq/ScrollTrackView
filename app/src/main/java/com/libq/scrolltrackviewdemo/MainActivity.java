@@ -15,7 +15,10 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         final ScrollTrackView stv = (ScrollTrackView) findViewById(R.id.stv);
-        Button btn =findViewById(R.id.btnRestart);
+        Button btn = (Button)findViewById(R.id.btnRestart);
+        Button btnPause = (Button)findViewById(R.id.btnPause);
+        Button btnStop = (Button)findViewById(R.id.btnStop);
+        Button btnStart =  (Button)findViewById(R.id.btnStart);
 
         final TextView tv = (TextView) findViewById(R.id.tv);
         //1.每个Track小块的数据,不设置也可以，有默认
@@ -23,23 +26,49 @@ public class MainActivity extends Activity {
 
         stv.setTrackTemplateData(template);
         stv.setDuration(20000); // 音频时间
+        stv.setCutDuration(10000);//屏幕左边跑到右边持续的时间
         stv.setTrackFragmentCount(10);//1 中是一个片段，这个参数表示重复1中片段画10次
+        stv.setLoopRun(false);//设置是否循环跑进度
         stv.setOnProgressRunListener(new ScrollTrackView.OnProgressRunListener() {
             @Override
-            public void onTrackRun(int ms) {
-                //进度走到结尾，会重复走到这个方法，从头开始
+            public void onTrackStart(int ms) {
+                
             }
 
             @Override
             public void onTrackStartTimeChange(int ms) {
                 tv.setText("从 "+ms*1f/1000f+" 秒开始");
             }
+
+            @Override
+            public void onTrackEnd() {
+
+            }
         });
+
 
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 stv.restartMove();
+            }
+        });
+        btnStop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                stv.stopMove();
+            }
+        });
+        btnPause.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               stv.pauseMove();
+            }
+        });
+        btnStart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                stv.startMove();
             }
         });
     }

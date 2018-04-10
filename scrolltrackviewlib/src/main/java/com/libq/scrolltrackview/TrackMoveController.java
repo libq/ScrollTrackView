@@ -11,18 +11,27 @@ import java.util.TimerTask;
 
 public class TrackMoveController {
     private Timer mTimer;
-    private int mDelayTime = 10;//ms
+    private long mDelayTime = 10;//ms
     private int mProgress = 0;
     private int mScrollTrackViewWidth;
     private int mScrollTrackStartX = 0;
     private OnProgressChangeListener mListener;
     private boolean isCanRun = true;
+    private boolean isLoopRun = false;
+    private boolean isStarted = true;
     public TrackMoveController(int delayTime){
         mDelayTime = delayTime;
     }
     public TrackMoveController(int delayTime, OnProgressChangeListener listener){
         mDelayTime = delayTime;
         mListener = listener;
+    }
+
+    public void setDelayTime(long ms){
+        mDelayTime = ms;
+    }
+    public void setLoopRun(boolean loop){
+        isLoopRun = loop;
     }
 
     public synchronized void start() {
@@ -33,7 +42,39 @@ public class TrackMoveController {
                 @Override
                 public void run() {
                     if (isCanRun) {
-                        //移动到最右边的时候，重新从启始位置开始移动
+                        if (isLoopRun) {
+                            //移动到最右边的时候，重新从启始位置开始移动
+                            if((mProgress-mScrollTrackStartX) >= mScrollTrackViewWidth){
+                                mProgress = mScrollTrackStartX;
+                                mListener.onProgressEnd();
+                                mListener.onProgressStart();
+                            }
+
+                            mProgress ++;
+                            if(mListener!=null){
+                                mListener.onProgressChange(mProgress);
+                            }
+
+                        }else{
+                            //onProgressStart 只执行一次
+                            if(isStarted){
+                                mListener.onProgressStart();
+                                isStarted = false;
+                            }
+
+                            if(mListener!=null){
+                                mListener.onProgressChange(mProgress);
+                            }
+
+                            if((mProgress-mScrollTrackStartX) >= mScrollTrackViewWidth){
+                                mListener.onProgressEnd();
+                            }else{
+                                mProgress ++;
+                            }
+
+                        }
+
+                        /*//移动到最右边的时候，重新从启始位置开始移动
                         if((mProgress-mScrollTrackStartX) >= mScrollTrackViewWidth){
                             mProgress = mScrollTrackStartX;
                             mListener.onProgressStart();
@@ -41,10 +82,12 @@ public class TrackMoveController {
                         mProgress ++;
                         if(mListener!=null){
                             mListener.onProgressChange(mProgress);
-                        }
+                        }*/
                     }
                 }
-            }, mDelayTime,10 );
+            }, 0,mDelayTime );//延时时间，间隔时间
+        }else{
+            isCanRun = true;
         }
     }
 
@@ -87,6 +130,7 @@ public class TrackMoveController {
     public interface OnProgressChangeListener{
         void onProgressChange(int progress);
         void onProgressStart();
+        void onProgressEnd();
     }
 
     public void setOnProgressChangeListener(OnProgressChangeListener listener){

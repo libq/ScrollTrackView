@@ -7,7 +7,6 @@ import android.graphics.Color;
 import android.os.Handler;
 import android.os.Message;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.ViewGroup;
@@ -31,8 +30,10 @@ public class ScrollTrackView extends HorizontalScrollView {
     private int mTrackItemWidth=16;
     private int mDelayTime = 20;//ms
     private int mTrackFragmentCount = 10;
-    private boolean isAutoRun = true;
-    private boolean isRestart = true;
+    private boolean isAutoRun = true;//是否自动跑进度
+    private boolean isLoopRun = false;//是否循环跑进度
+    private int mCutDuration = 10 * 1000;//裁剪区间，也就是控件左边，跑到右边的时间
+    private float mSpeed= 10;
 
     /**
      * 滚动状态:
@@ -76,7 +77,8 @@ public class ScrollTrackView extends HorizontalScrollView {
 
         isAutoRun = typedArray.getBoolean(R.styleable.ScrollTrackView_auto_run,isAutoRun);
         mTrackFragmentCount = typedArray.getInteger(R.styleable.ScrollTrackView_track_fragment_count,mTrackFragmentCount);
-        mDelayTime = typedArray.getInteger(R.styleable.ScrollTrackView_delay_time,mDelayTime);
+        mCutDuration = typedArray.getInteger(R.styleable.ScrollTrackView_cut_duration,mCutDuration);
+        isLoopRun = typedArray.getBoolean(R.styleable.ScrollTrackView_loop_run,isLoopRun);
 
         typedArray.recycle();
         initView(context);
@@ -113,7 +115,14 @@ public class ScrollTrackView extends HorizontalScrollView {
             @Override
             public void onProgressStart() {
                 if(mProgressRunListener !=null){
-                    mProgressRunListener.onTrackRun(getStartTime());
+                    mProgressRunListener.onTrackStart(getStartTime());
+                }
+            }
+
+            @Override
+            public void onProgressEnd() {
+                if(mProgressRunListener !=null){
+                    mProgressRunListener.onTrackEnd();
                 }
             }
         });
@@ -123,6 +132,10 @@ public class ScrollTrackView extends HorizontalScrollView {
             public void run() {
                 //可视的时候开始走进度
                 moveController.setScrollTrackViewWidth(getWidth());
+                mSpeed = ((getWidth()*1f)/(mCutDuration*1f));//根据时间和控件的宽度计算速度
+                float delayTime = 1f/mSpeed;//根据速度来算走每个像素点需要多久时间
+                moveController.setDelayTime(Math.round(delayTime));//四舍五入
+                moveController.setLoopRun(isLoopRun);
                 if(isAutoRun){
                     startMove();
                 }
@@ -164,6 +177,20 @@ public class ScrollTrackView extends HorizontalScrollView {
         };
 
 
+    }
+
+    public void setCutDuration(int cutDuration){
+        mCutDuration = cutDuration;
+    }
+
+    /**
+     * 设置循环播放
+     * @param isLoop
+     */
+    public void setLoopRun(boolean isLoop){
+        if(moveController!=null){
+            moveController.setLoopRun(isLoop);
+        }
     }
 
     public void setTrackTemplateData(float[] data){
@@ -294,12 +321,21 @@ public class ScrollTrackView extends HorizontalScrollView {
         }
     }
 
+
+    public void pauseMove(){
+        disableTouch = false;
+        if (moveController != null) {
+            moveController.pause();
+        }
+    }
+
     /**
      * 轨道开始播放到轨道结束监听
      */
     public interface OnProgressRunListener {
-        void onTrackRun(int ms);
+        void onTrackStart(int ms);
         void onTrackStartTimeChange(int ms);
+        void onTrackEnd();
 
     }
 
