@@ -41,8 +41,8 @@ public class Track extends View {
     private int trackTemplateCount;//track 模板的竖条的个数
     private int mBackgroundColor;
     private int mForegroundColor;
-    private int mSpaceSize;
-    private int mTrackItemWidth;
+    private int mSpaceSize = 6;
+    private int mTrackItemWidth = 6;
     private int mTrackFragmentCount;//track 片段个数
     private float[] mTrackTemplateData = {0.80f,0.70f,0.40f,0.60f,0.40f,0.30f,0.50f,0.70f,0.65f,0.90f};//track中一个片段中每个竖条的高度比例
 
@@ -101,7 +101,7 @@ public class Track extends View {
 
         mTrackPaint = new Paint();
         mTrackPaint.setAntiAlias(true);
-        mTrackPaint.setStrokeWidth(10);
+        mTrackPaint.setStrokeWidth(mTrackItemWidth);
         mTrackPaint.setColor(Color.LTGRAY);
         mTrackPaint.setStyle(Paint.Style.FILL);
         mTrackPaint.setStrokeCap(Paint.Cap.ROUND);

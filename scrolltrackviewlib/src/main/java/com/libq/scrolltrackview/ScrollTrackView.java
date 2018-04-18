@@ -26,8 +26,8 @@ public class ScrollTrackView extends HorizontalScrollView {
 
     private int mBackgroundColor = Color.LTGRAY;
     private int mForegroundColor = Color.BLUE;
-    private int mSpaceSize = 6;
-    private int mTrackItemWidth=16;
+    private int mSpaceSize = 16;
+    private int mTrackItemWidth=6;
     private int mDelayTime = 20;//ms
     private int mTrackFragmentCount = 10;
     private boolean isAutoRun = true;//是否自动跑进度
@@ -70,11 +70,12 @@ public class ScrollTrackView extends HorizontalScrollView {
 
         mBackgroundColor = typedArray.getColor(R.styleable.ScrollTrackView_background_color, mBackgroundColor);
         mForegroundColor = typedArray.getColor(R.styleable.ScrollTrackView_foreground_color, mForegroundColor);
-        int spsize = typedArray.getDimensionPixelSize(R.styleable.ScrollTrackView_space_size, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 0, getContext().getResources().getDisplayMetrics()));
-        mSpaceSize = spsize==0?mSpaceSize:spsize;
-        int tiw = typedArray.getDimensionPixelSize(R.styleable.ScrollTrackView_track_item_width, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 0, getContext().getResources().getDisplayMetrics()));
-        mTrackItemWidth = tiw==0?mTrackItemWidth:tiw;
 
+        //px
+        mSpaceSize = Math.round(typedArray.getDimension(R.styleable.ScrollTrackView_space_size,mSpaceSize));
+        //mSpaceSize =ViewUtil.dp2px(context,Math.round(spaceSizeDp));
+        mTrackItemWidth = Math.round(typedArray.getDimension(R.styleable.ScrollTrackView_track_item_width,mTrackItemWidth));
+        //mTrackItemWidth = ViewUtil.dp2px(context,Math.round(trackItemWidthDp));
         isAutoRun = typedArray.getBoolean(R.styleable.ScrollTrackView_auto_run,isAutoRun);
         mTrackFragmentCount = typedArray.getInteger(R.styleable.ScrollTrackView_track_fragment_count,mTrackFragmentCount);
         mCutDuration = typedArray.getInteger(R.styleable.ScrollTrackView_cut_duration,mCutDuration);
@@ -200,6 +201,18 @@ public class ScrollTrackView extends HorizontalScrollView {
     public void setTrackFragmentCount(int count){
         if(track!=null){
             track.setTrackFragmentCount(count);
+        }
+    }
+
+    public void setSpaceSize(int px){
+        if(track!=null){
+            track.setSpaceSize(px);
+        }
+    }
+
+    public void setTrackItemWidth(int px){
+        if(track!=null){
+            track.setTrackItemWidth(px);
         }
     }
 
