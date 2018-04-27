@@ -1,5 +1,5 @@
 # ScrollTrackView
-类似抖音 IOS 效视频音频截取进度条
+类似抖音 IOS 视频音频截取进度条
 
 ![demo](https://github.com/libq/ScrollTrackView/blob/master/demo.png)
 
