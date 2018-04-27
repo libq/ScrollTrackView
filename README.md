@@ -14,7 +14,7 @@
 	}
 ## module 下的 build.gradle ：
     dependencies {
-	        compile 'com.github.libq:ScrollTrackView:1.0.3'
+	        compile 'com.github.libq:ScrollTrackView:1.0.4'
 	}
 	
 ## xml：
