@@ -49,8 +49,10 @@ public class TrackMoveController {
                                 mListener.onProgressEnd();
                                 mListener.onProgressStart();
                             }
+                            if (isProgressContinue) {
+                                mProgress ++;
+                            }
 
-                            mProgress ++;
                             if(mListener!=null){
                                 mListener.onProgressChange(mProgress);
                             }
@@ -122,6 +124,12 @@ public class TrackMoveController {
         start();
     }
 
+    private boolean isProgressContinue = true;
+    //绘制到当前位置然后暂停进度
+    public void setProgressContinue(boolean bPause){
+        isProgressContinue = bPause;
+    }
+
 
     public int getProgress(){
         return mProgress;
@@ -140,6 +148,14 @@ public class TrackMoveController {
 
     public void setScrollTrackViewWidth(int mScrollTrackViewWidth) {
         this.mScrollTrackViewWidth = mScrollTrackViewWidth;
+    }
+
+    /**
+     * 设置当前进度条位置
+     * @param positionX px
+     */
+    public void setCurrentProgressPosition(int positionX){
+        mProgress = mScrollTrackStartX + positionX;
     }
 
     public void setScrollTrackStartX(int x){

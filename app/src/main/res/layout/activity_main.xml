@@ -24,6 +24,15 @@
         app:cut_duration="10000"
         app:auto_run="true"
         />
+
+    <SeekBar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:max="100"
+        android:progress="0"
+        android:id="@+id/seek_bar"
+        />
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -53,6 +62,7 @@
         android:layout_margin="10dp"
         android:id="@+id/btnStart"
         />
+
 
 
 </LinearLayout>

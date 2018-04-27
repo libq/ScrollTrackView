@@ -369,6 +369,23 @@ public class ScrollTrackView extends HorizontalScrollView {
         return (int)(audioDuration * rate);
     }
 
+    public void setProgressContinue(boolean isContinue){
+        if(moveController!=null){
+            moveController.setProgressContinue(isContinue);
+        }
+    }
+
+    /**
+     * 设置进度
+     * @param percent 浮点数，当前位置在整个view 中的比例
+     */
+    public void setRealProgress(float percent){
+        if(moveController!=null){
+            float position = getWidth() * 1f * percent;
+            moveController.setCurrentProgressPosition(Math.round(position));
+        }
+    }
+
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();

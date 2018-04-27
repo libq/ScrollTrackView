@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.libq.scrolltrackview.ScrollTrackView;
@@ -19,6 +20,7 @@ public class MainActivity extends Activity {
         Button btnPause = (Button)findViewById(R.id.btnPause);
         Button btnStop = (Button)findViewById(R.id.btnStop);
         Button btnStart =  (Button)findViewById(R.id.btnStart);
+        SeekBar seekBar = findViewById(R.id.seek_bar);
 
         final TextView tv = (TextView) findViewById(R.id.tv);
         //1.每个Track小块的数据,不设置也可以，有默认
@@ -71,6 +73,21 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View v) {
                 stv.startMove();
+            }
+        });
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                stv.setRealProgress(progress*1f/100f);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                stv.setProgressContinue(false);
+            }
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                stv.setProgressContinue(true);
             }
         });
     }
