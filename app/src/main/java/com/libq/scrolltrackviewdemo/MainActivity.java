@@ -20,7 +20,7 @@ public class MainActivity extends Activity {
         Button btnPause = (Button)findViewById(R.id.btnPause);
         Button btnStop = (Button)findViewById(R.id.btnStop);
         Button btnStart =  (Button)findViewById(R.id.btnStart);
-        SeekBar seekBar = findViewById(R.id.seek_bar);
+        final SeekBar iseekBar = findViewById(R.id.seek_bar);
 
         final TextView tv = (TextView) findViewById(R.id.tv);
         //1.每个Track小块的数据,不设置也可以，有默认
@@ -29,7 +29,7 @@ public class MainActivity extends Activity {
         //stv.setTrackTemplateData(template);
         stv.setDuration(20000); // 音频时间
         stv.setCutDuration(10000);//屏幕左边跑到右边持续的时间
-        stv.setTrackFragmentCount(10);//1 中是一个片段，这个参数表示重复1中片段画10次
+        stv.setTrackFragmentCount(30);//1 中是一个片段，这个参数表示重复1中片段画10次
         stv.setLoopRun(true);//设置是否循环跑进度
         stv.setSpaceSize(6);
         stv.setTrackItemWidth(6);
@@ -49,6 +49,7 @@ public class MainActivity extends Activity {
 
             }
         });
+
 
 
         btn.setOnClickListener(new View.OnClickListener() {
@@ -75,18 +76,23 @@ public class MainActivity extends Activity {
                 stv.startMove();
             }
         });
-        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+        iseekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                stv.setRealProgress(progress*1f/100f);
+                boolean isCanSetProgress = (boolean) iseekBar.getTag();
+                if(isCanSetProgress){
+                    stv.setRealProgress(progress*1f/100f);
+                }
             }
-
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
+                iseekBar.setTag(true);
                 stv.setProgressContinue(false);
+
             }
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
+                iseekBar.setTag(false);
                 stv.setProgressContinue(true);
             }
         });
