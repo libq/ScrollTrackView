@@ -64,47 +64,6 @@
             }
         });
 
-
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                stv.restartMove();
-            }
-        });
-        btnStop.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                stv.stopMove();
-            }
-        });
-        btnPause.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-               stv.pauseMove();
-            }
-        });
-        btnStart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                stv.startMove();
-            }
-        });
-        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                stv.setRealProgress(progress*1f/100f);
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-                stv.setProgressContinue(false);
-            }
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                stv.setProgressContinue(true);
-            }
-        });
-    }
 ```
   
 
